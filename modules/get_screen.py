@@ -37,7 +37,7 @@ def capture():
 
     if isiconic:
         win32gui.ShowWindow(hwnd,win32con.SW_SHOWMINIMIZED)
-    return im
+    return im,rect
 
 if __name__ == "__main__":
     for i in range(10):

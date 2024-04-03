@@ -1,55 +1,25 @@
 from modules.get_screen import capture
 import cv2
 import numpy as np
+from modules.template_match import match
 #import win32api, win32con, time
+import pyautogui
 
 
 if __name__ == "__main__":
-    im = capture()
+    im,window_rect = capture()
+    print(window_rect)
+
     if im !=None:
-        #template = cv2.imread('templates/btn_close.png', cv2.IMREAD_COLOR)
-        template = cv2.imread('templates/sadovod.png', cv2.IMREAD_COLOR)
-        tc,tw,th = template.shape[::-1]
+        print(match('templates/sadovod.png',im))
+        print(match('templates/btn_cross.png',im))
+        #print(match('templates/btn_close.png',im,True))
 
-        #template = cv2.cvtColor(template, cv2.COLOR_)
-        #cv2.imshow("array",np.array(template))
-        #cv2.waitKey()
-
-
-        #cv2.imshow("array",np.asarray(im))
-        #cv2.waitKey()
-        #cv2.destroyAllWindows()
-
-        
-
-        img = cv2.cvtColor(np.asarray(im), cv2.COLOR_RGBA2RGB)
-        #cv2.imshow("img",img)
-        
-
-
-        #https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html
-        res = cv2.matchTemplate(img,template,cv2.TM_CCOEFF_NORMED)
-        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-
-        print("min="+str(min_loc)+"("+str(min_val)+");max="+str(max_loc)+"("+str(max_val)+");")
-
-        if max_val > 0.8:
-            cv2.rectangle(img, max_loc, (max_loc[0] + tw, max_loc[1] + th), (255,0,0), 3)
-
-        threshold = 0.9
-        loc = np.where( res >= threshold)
-
-        for pt in zip(*loc[::-1]):
-            cv2.rectangle(img, pt, (pt[0] + tw, pt[1] + th), (255,255,255), 1)
-            print(pt)
-        
-        cv2.imshow("array",np.asarray(img))
-        cv2.waitKey()
-        cv2.destroyAllWindows()
-            
-
-
-
+        out = match('templates/btn_close.png',im)
+        if out[0] > 0.85:
+            pyautogui.moveTo(window_rect[0]+out[1][0]+int(out[2][0]/2), window_rect[1]+out[1][1]+int(out[2][1]/2))
+            pyautogui.leftClick()
+  
     else:
         print("Bluestacks window not found")
     
