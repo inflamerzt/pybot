@@ -6,6 +6,8 @@ def capture():
 
     hwnd = win32gui.FindWindow(None, "Bluestacks App Player")
 
+    if hwnd == 0:
+        return None
     rect = win32gui.GetWindowRect(hwnd)
     w = rect[2] - rect[0]
     h = rect[3] - rect[1]
@@ -22,9 +24,9 @@ def capture():
     bmpstr = dataBitMap.GetBitmapBits(True)
     im = Image.frombuffer('RGBA', (bmpinfo['bmWidth'], bmpinfo['bmHeight']), bmpstr, 'raw', 'RGBA', 0, 1)
 
-    cv2.imshow("array",np.asarray(im))
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+#    cv2.imshow("array",np.asarray(im))
+#    cv2.waitKey()
+#    cv2.destroyAllWindows()
 
     return im
 
