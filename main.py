@@ -33,7 +33,8 @@ if __name__ == "__main__":
 
         print("min="+str(min_loc)+"("+str(min_val)+");max="+str(max_loc)+"("+str(max_val)+");")
 
-        cv2.rectangle(img, max_loc, (max_loc[0] + tw, max_loc[1] + th), (255,0,0), 3)
+        if max_val > 0.8:
+            cv2.rectangle(img, max_loc, (max_loc[0] + tw, max_loc[1] + th), (255,0,0), 3)
 
         threshold = 0.9
         loc = np.where( res >= threshold)
