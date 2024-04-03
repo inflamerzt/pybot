@@ -8,6 +8,12 @@ def capture():
 
     if hwnd == 0:
         return None
+    
+    isiconic = False
+    if win32gui.IsIconic(hwnd):
+        win32gui.ShowWindow(hwnd, win32con.SW_SHOWNOACTIVATE)
+        isiconic = True
+
     rect = win32gui.GetWindowRect(hwnd)
     w = rect[2] - rect[0]
     h = rect[3] - rect[1]
@@ -28,6 +34,9 @@ def capture():
 #    cv2.waitKey()
 #    cv2.destroyAllWindows()
 
+
+    if isiconic:
+        win32gui.ShowWindow(hwnd,win32con.SW_SHOWMINIMIZED)
     return im
 
 if __name__ == "__main__":
